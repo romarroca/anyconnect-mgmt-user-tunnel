@@ -58,8 +58,7 @@ This enables a separate, pre-login VPN tunnel for remote management of devices, 
 <img width="694" height="802" alt="image" src="https://github.com/user-attachments/assets/c8eafad3-500b-46e7-a2b5-fade8c5cc95b" />
 
 - **Client Bypass Protocol:** Enabled  
-  - Ensures that the management tunnel does not block local network access when needed.  
-
+  
 ### Secure Client → Custom Attributes
 
 <img width="702" height="796" alt="image" src="https://github.com/user-attachments/assets/7ba0a355-6939-41ec-bbb6-2ee7ff861aea" />
