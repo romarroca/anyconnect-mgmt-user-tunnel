@@ -70,3 +70,90 @@ This ensures that endpoints can connect automatically pre-logon, with only limit
 - This group policy is tied only to the management tunnel profile (`mgmtVPN`).  
 - Access should be tightly restricted (typically DCs, SCCM, AV servers).  
 - The combination of `mgmtprofile.xml` and the certificate requirement ensures that only corporate machines can establish this tunnel.
+
+## Group Policy: SSO-GP (User Tunnel)
+
+The **SSO-GP** group policy defines the **user tunnel** behavior.  
+Unlike the management tunnel, this policy provides the user with full corporate access after login.
+
+### General Settings
+
+<img width="696" height="801" alt="image" src="https://github.com/user-attachments/assets/cf601036-a18a-471b-a894-a134c89f915a" />
+
+- **VPN Protocols:** SSL and IPsec-IKEv2 both enabled  
+  (provides flexibility depending on client configuration)
+
+### Secure Client → Client Profile
+
+<img width="701" height="672" alt="image" src="https://github.com/user-attachments/assets/8887c69c-b72d-4912-85a9-dd29711a777e" />
+
+- **Profile:** `sso.xml`  
+  - Defines the user tunnel configuration delivered to endpoints.  
+  - Includes Always-On behavior and SSO (SAML/AAA) settings.  
+
+### Secure Client → Management Profile
+
+<img width="694" height="678" alt="image" src="https://github.com/user-attachments/assets/bddfc725-95cc-4054-91e8-62d8cef5d0d1" />
+
+- **Profile:** `mgmtprofile.xml`  
+  - Ensures that the **management tunnel** is available pre-logon.  
+  - The user tunnel takes over after login, replacing the management tunnel.  
+
+📌 **Notes:**
+- The user tunnel chains authentication by requiring both:  
+  - A valid **machine certificate** (to confirm corporate asset)  
+  - User login via **AAA/SAML** (to confirm user identity)  
+- This allows you to enforce *device trust + user trust* without issuing separate user certificates.  
+- Unlike the management group policy, this policy provides broader access (based on corporate ACLs).
+
+## Connection Profiles
+
+Connection profiles link the **VPN entry point** (what the client sees) with the correct **Group Policy**.  
+This is where management and user tunnels are separated.
+
+---
+
+### Management Tunnel Connection Profile
+
+<img width="708" height="670" alt="image" src="https://github.com/user-attachments/assets/d14930c1-f0b8-4b18-b33a-0d68ba406426" />
+
+- **Name:** `mgmtVPN`  
+- **Group Policy:** `AnyConnect_Management`
+
+<img width="703" height="661" alt="image" src="https://github.com/user-attachments/assets/29208861-5ccd-418f-b161-bc9e541a1bcb" />
+
+- **Authentication:** `Client Certificate Only`  
+  - Ensures only endpoints with a valid machine certificate can establish the management tunnel.  
+- **Alias:** `mgmtVPN`
+
+  <img width="699" height="646" alt="image" src="https://github.com/user-attachments/assets/cfdd359b-1258-447c-8f46-6b558dd8aef9" />
+
+  - URL Alias configured (`https://<fqdn>/mgmtVPN`)  
+  - Automatically connects endpoints using the management tunnel pre-logon.  
+
+📌 **Notes:**  
+This tunnel provides restricted access (AD, SCCM, patch servers) and is not user-interactive.  
+
+---
+
+### User Tunnel Connection Profile
+
+<img width="697" height="665" alt="image" src="https://github.com/user-attachments/assets/026b75d7-9075-4795-abbf-84579a705b60" />
+
+- **Name:** `ssoVPN` (example based on screenshots)  
+- **Group Policy:** `SSO-GP`  
+- **Authentication:** Chained (certificate validation + AAA/SAML)
+
+  <img width="707" height="493" alt="image" src="https://github.com/user-attachments/assets/de0b4e6c-2b35-410f-a2b3-d9341b00bee5" />
+
+  - Machine cert ensures device trust.  
+  - AAA/SAML ensures user trust.  
+- **Alias:** `ssoVPN`
+  
+  <img width="695" height="497" alt="image" src="https://github.com/user-attachments/assets/c9e20f55-acb7-4c70-9fc0-9cba882a5abf" />
+
+  - URL Alias used for user login portals.  
+
+📌 **Notes:**  
+The user tunnel replaces the management tunnel after login. It provides the full access policy defined under `SSO-GP`.  
+
