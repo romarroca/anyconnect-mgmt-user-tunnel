@@ -156,3 +156,55 @@ This tunnel provides restricted access (AD, SCCM, patch servers) and is not user
 📌 **Notes:**  
 The user tunnel replaces the management tunnel after login. It provides the full access policy defined under `SSO-GP`.  
 
+
+## Management Tunnel Profile (mgmttunnel.xml)
+
+<img width="320" height="66" alt="image" src="https://github.com/user-attachments/assets/acf05f62-4b84-46f2-8a87-82b88179da36" />
+
+The management tunnel profile (`mgmttunnel.xml`) was created using the **VPN Management Tunnel Standalone Profile Editor**.  
+This XML controls how the Always-On management tunnel behaves on endpoints.
+
+### Preferences
+
+<img width="917" height="788" alt="image" src="https://github.com/user-attachments/assets/a59c44de-27ea-45a1-9872-cc022b9a80fc" />
+
+<img width="923" height="1168" alt="image" src="https://github.com/user-attachments/assets/4cf7520c-ba65-43b4-8c53-db5c831f3944" />
+
+<img width="919" height="817" alt="image" src="https://github.com/user-attachments/assets/96d24b3c-4da5-40d5-8129-fea42312ed2f" />
+
+<img width="909" height="911" alt="image" src="https://github.com/user-attachments/assets/02415e3a-d0c2-4d57-a0b0-995289a5f2b0" />
+
+- **Client Certificate Store:** Machine (Windows & Linux) / System (macOS) 
+- **Auto Reconnect Behavior:** ReconnectAfterResume  
+- **IP Protocol Supported:** IPv4, IPv6  
+- **Other Settings:**  
+  - Local LAN Access: Disabled  
+  - Captive Portal Detection: Disabled  
+  - Clear SmartCard PIN: Enabled  
+
+📌 **Purpose:** Ensures the tunnel uses a **machine certificate** to establish trust, auto-recovers after sleep/hibernation, and supports both IPv4/IPv6.
+
+---
+
+### Certificate Matching
+- **Key Usage:** Digital Signature  
+- **Extended Key Usage:** Client Authentication  
+- **Distinguished Name Match:**  
+  - `ISSUER-CN = DC01-CA`  
+  - `ISSUER-DC = rnetworks`  
+  - `ISSUER-DC = local`  
+
+📌 **Purpose:** Restricts which certificates can be used by matching the issuing CA and ensuring the EKU includes Client Authentication.
+
+---
+
+### Server List
+- **Primary Server:**  
+  - FQDN/IP: `<redacted>`  
+  - User Group: `mgmtVPN`  
+  - Protocol: SSL  
+  - Auth Method: EAP-AnyConnect  
+- **Backup Servers:** None configured  
+
+📌 **Purpose:** The management tunnel connects directly to the FTD using the `mgmtVPN` connection profile. Backup servers can be added for redundancy if needed.
+
