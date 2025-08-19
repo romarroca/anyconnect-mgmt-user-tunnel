@@ -219,7 +219,7 @@ This XML controls how the user-facing VPN connection is established and authenti
 
 <img width="886" height="691" alt="image" src="https://github.com/user-attachments/assets/98d98ed1-b794-4285-9b31-8499df0d0dc0" />
 
-<img width="889" height="332" alt="image" src="https://github.com/user-attachments/assets/11489fdb-c234-4dfa-be0e-2ffbb4b4a383" />
+<img width="900" height="318" alt="image" src="https://github.com/user-attachments/assets/c4078abd-34f9-4b92-9385-407966b7c06b" />
 
 ---
 
