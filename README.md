@@ -208,3 +208,66 @@ This XML controls how the Always-On management tunnel behaves on endpoints.
 
 📌 **Purpose:** The management tunnel connects directly to the FTD using the `mgmtVPN` connection profile. Backup servers can be added for redundancy if needed.
 
+## User Tunnel Profile (sso.xml)
+
+The user tunnel profile (`sso.xml`) was created using the **Cisco Secure Client Profile Editor**.  
+This XML controls how the user-facing VPN connection is established and authenticated.
+
+<img width="890" height="759" alt="image" src="https://github.com/user-attachments/assets/a5a761e9-f6ed-40e8-b5bc-3c816d3514d4" />
+
+<img width="890" height="1078" alt="image" src="https://github.com/user-attachments/assets/5c8f5edf-cde4-4ef1-9a93-c43766dab1ef" />
+
+<img width="886" height="691" alt="image" src="https://github.com/user-attachments/assets/98d98ed1-b794-4285-9b31-8499df0d0dc0" />
+
+<img width="889" height="332" alt="image" src="https://github.com/user-attachments/assets/11489fdb-c234-4dfa-be0e-2ffbb4b4a383" />
+
+---
+
+### Preferences (Part 1)
+- **Client Certificate Store:** Machine (Windows), Login (macOS)  
+- **Auto Connect on Start:** Enabled (user controllable)  
+- **Auto Reconnect Behavior:** ReconnectAfterResume  
+- **Windows VPN Establishment:** LocalUsersOnly  
+- **Linux VPN Establishment:** LocalUsersOnly  
+- **IP Protocol Supported:** IPv4, IPv6  
+
+📌 **Purpose:** Ensures the tunnel comes up automatically for logged-in users, tied to both machine certificate (device trust) and user authentication (identity trust).
+
+---
+
+### Preferences (Part 2)
+- **Automatic VPN Policy:** Always-On (cannot disconnect manually)  
+- **Trusted Network Detection:** Configured  
+- **Allow Access to the Following Hosts with VPN Disconnected:** DUO SAML IdP  
+  - This allowlist is required so the user can reach the DUO SAML identity provider **before the tunnel is established**.  
+  - Without this, the user would not be able to complete authentication.  
+
+📌 **Note:**  
+This documentation does not cover the full DUO SAML IdP configuration.  
+Alternatively, you can integrate directly with AAA servers on the FTD (on-prem RADIUS/LDAP) if SAML is not required.
+
+---
+
+### Certificate Matching
+- **Key Usage:** Digital Signature  
+- **Extended Key Usage:** Client Authentication  
+- **Distinguished Name Match:**  
+  - `ISSUER-CN = DC01-CA`  
+  - `ISSUER-DC = rnetworks`  
+  - `ISSUER-DC = local`  
+
+📌 **Purpose:** Ensures only certificates from the corporate CA are accepted for user tunnel initiation.
+
+---
+
+### Server List
+- **Primary Server:**  
+  - FQDN/IP: `<redacted>`  
+  - User Group: `sso`  
+  - Protocol: SSL  
+  - Auth Method: EAP-AnyConnect  
+- **Backup Servers:** None configured  
+
+📌 **Purpose:** Defines the user tunnel entry point and ties it to the `SSO-GP` group policy.
+
+
