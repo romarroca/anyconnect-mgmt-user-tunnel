@@ -30,7 +30,6 @@ Instead of issuing separate user certificates, the configuration chains authenti
   - Purpose: Client Authentication (EKU: 1.3.6.1.5.5.7.3.2)  
   - Used for both management tunnel (pre-logon) and user tunnel (chained with user login)
 
-📌 **Note:** No separate user certificate is required in this design. The FTD validates that the machine is trusted before allowing user-level authentication.
 
 ## Group Policy: AnyConnect_Management
 
