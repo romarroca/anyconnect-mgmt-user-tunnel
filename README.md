@@ -272,3 +272,20 @@ Alternatively, you can integrate directly with AAA servers on the FTD (on-prem R
 📌 **Purpose:** Defines the user tunnel entry point and ties it to the `SSO-GP` group policy.
 
 
+## User Experience (Mgmt → User Tunnel)
+
+This section shows what happens on the endpoint from **lock screen → login → SAML**.  
+Use these screenshots to demo the handoff from the **management tunnel** to the **user tunnel**.
+
+### 1) Pre-login: Management tunnel is up
+
+<img width="1759" height="839" alt="image" src="https://github.com/user-attachments/assets/62d85adc-e709-4954-857b-cf0fba5af2c3" />
+
+When the user logs in, the management tunnel is terminated
+
+<img width="995" height="274" alt="image" src="https://github.com/user-attachments/assets/9c0b6969-78c5-4814-b02f-81b9bba627d7" />
+
+Always-on vpn kicks in, secure-client will initiate log-in base on the configured authentication method
+
+<img width="2030" height="1027" alt="image" src="https://github.com/user-attachments/assets/350c7c9a-ba56-4ada-9f46-577f501fb976" />
+
