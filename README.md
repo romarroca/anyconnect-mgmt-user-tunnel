@@ -35,6 +35,8 @@ Instead of issuing separate user certificates, the configuration chains authenti
 
 The **AnyConnect_Management** group policy defines the behavior of the management tunnel.  
 This ensures that endpoints can connect automatically pre-logon, with only limited network access.
+This enables a separate, pre-login VPN tunnel for remote management of devices, often used with Cisco AnyConnect. This allows administrators to manage devices before a user logs in, pushing updates or performing maintenance tasks. It typically uses machine certificate authentication and is separate from the user's VPN connection. 
+
 
 ### General Settings
 
@@ -63,7 +65,6 @@ This ensures that endpoints can connect automatically pre-logon, with only limit
 <img width="702" height="796" alt="image" src="https://github.com/user-attachments/assets/7ba0a355-6939-41ec-bbb6-2ee7ff861aea" />
 
 - **Attribute:** `ManagementTunnelAllAllowed = true`  
-  - Allows the management tunnel for all endpoints with valid machine certificates.
 
 📌 **Notes:**
 - This group policy is tied only to the management tunnel profile (`mgmtVPN`).  
