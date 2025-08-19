@@ -1,6 +1,8 @@
 # anyconnect-mgmt-user-tunnel
 Configuration and documentation for Cisco Secure Client (AnyConnect) with management tunnel and user tunnel deployment. This repository covers setup, testing, and configuration for Always-On VPN, certificate-based authentication, and the transition from machine-level to user-level connectivity.
 
+> **Note:** All screenshots/configs come from a **lab environment**. Values are examples only and not intended for production as-is.
+
 ## Components used
 - Cisco Secure Client (AnyConnect) 5.x
 - Cisco Firepower Threat Defense (FTD) with FMC 7.4.X
